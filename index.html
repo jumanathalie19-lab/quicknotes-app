@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickNotes</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<h1>QuickNotes</h1>
+<p>Capture ideas before they disappear</p>
+<nav>
+<a href="index.html">Home</a>
+<button id="themeBtn">Dark Mode</button>
+</nav>
+</header>
+<main>
+<section>
+<h2>Add a note</h2>
+<form id="note-form">
+<label for="noteText">New note</label>
+<textarea id="noteText" placeholder="Start typing..."></textarea>
+<label for="category">Category</label>
+<select id="category">
+<option value="personal">Personal</option>
+<option value="work">Work</option>
+<option value="ideas">Ideas</option>
+</select>
+<p id="charCount">0 / 200 characters</p>
+<p id="wordCount">0 words</p>
+<button type="submit">Add Note</button>
+<button type="button" id="clearBtn">Clear</button>
+<p id="errorMsg"></p>
+</form>
+</section>
+<section>
+<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+<h2>Your notes</h2>
+<input type="text" id="searchInput" placeholder="Search notes...">
+</div>
+<p id="note-count">You have 0 notes</p>
+<ul id="notes-list"></ul>
+</section>
+</main>
+<footer><p>&copy; 2026 QuickNotes</p></footer>
+<script src="script.js"></script>
+</body>
+</html>
