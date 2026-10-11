@@ -7,8 +7,9 @@ const form=document.getElementById("note-form");
 const list=document.getElementById("notes-list");
 const noteCountEl=document.getElementById("note-count");
 const category=document.getElementById("category");
-const searchInput=document.getElementById("searchInput");
-const errorMsg=document.getElementById("errorMsg");
+const searchInput=document.getElementById("search-input");
+const errorMsg=document.getElementById("error-message");
+const emptySearch=document.getElementById("empty-search");
 
 function updateCounts(){
  const len=noteText.value.length;
@@ -21,21 +22,60 @@ function updateCounts(){
 }
 function getNotes(){return JSON.parse(localStorage.getItem("quicknotes")||"[]")}
 function saveNotes(n){localStorage.setItem("quicknotes",JSON.stringify(n))}
+
 function renderNotes(filter=""){
  const notes=getNotes();
  const filtered=notes.filter(n=>n.text.toLowerCase().includes(filter.toLowerCase()));
  list.innerHTML="";
- filtered.forEach((note,i)=>{
+ if(filtered.length===0 && filter){
+   emptySearch.style.display="block";
+ } else {
+   emptySearch.style.display="none";
+ }
+ if(filtered.length===0 && !filter){
+   list.innerHTML="<li style='border:none;'>No notes yet. Add one above!</li>";
+ }
+
+ filtered.forEach((note)=>{
   const li=document.createElement("li");
-  li.className=note.category;
-  li.innerHTML=`<span><strong>[${note.category}]</strong> ${note.text}</span>
-  <span><button onclick="deleteNote(${i})">Delete</button></span>`;
+  li.className=`category-${note.category}`;
+
+  const leftDiv=document.createElement("div");
+  const catStrong=document.createElement("strong");
+  catStrong.textContent=`[${note.category}] `;
+  const textSpan=document.createElement("span");
+  textSpan.textContent=note.text; // SECURE: textContent prevents XSS
+
+  const timeSmall=document.createElement("small");
+  timeSmall.style.display="block";
+  timeSmall.style.color="#666";
+  timeSmall.textContent=new Date(note.timestamp).toLocaleString();
+
+  leftDiv.appendChild(catStrong);
+  leftDiv.appendChild(textSpan);
+  leftDiv.appendChild(timeSmall);
+
+  const rightDiv=document.createElement("div");
+  const delBtn=document.createElement("button");
+  delBtn.textContent="Delete";
+  delBtn.addEventListener("click",()=>deleteNoteById(note.id));
+  rightDiv.appendChild(delBtn);
+
+  li.appendChild(leftDiv);
+  li.appendChild(rightDiv);
   list.appendChild(li);
  });
+
  const c=notes.length;
  noteCountEl.textContent=c===0?`You have 0 notes`:c===1?`You have 1 note`:`You have ${c} notes`;
 }
-window.deleteNote=(i)=>{const n=getNotes(); n.splice(i,1); saveNotes(n); renderNotes(searchInput.value)}
+
+function deleteNoteById(id){
+ const notes=getNotes();
+ const updated=notes.filter(n=>n.id!==id);
+ saveNotes(updated);
+ renderNotes(searchInput.value);
+}
 
 form.addEventListener("submit",e=>{
  e.preventDefault();
