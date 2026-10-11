@@ -20,7 +20,7 @@
 <h2>Add a note</h2>
 <form id="note-form">
 <label for="noteText">New note</label>
-<textarea id="noteText" placeholder="Start typing..."></textarea>
+<textarea id="noteText" placeholder="Start typing..." maxlength="200"></textarea>
 <label for="category">Category</label>
 <select id="category">
 <option value="personal">Personal</option>
@@ -31,16 +31,17 @@
 <p id="wordCount">0 words</p>
 <button type="submit">Add Note</button>
 <button type="button" id="clearBtn">Clear</button>
-<p id="errorMsg"></p>
+<p id="error-message"></p>
 </form>
 </section>
 <section>
 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
 <h2>Your notes</h2>
-<input type="text" id="searchInput" placeholder="Search notes...">
+<input type="text" id="search-input" placeholder="Search notes...">
 </div>
 <p id="note-count">You have 0 notes</p>
 <ul id="notes-list"></ul>
+<p id="empty-search" style="display:none;">No notes match your search.</p>
 </section>
 </main>
 <footer><p>&copy; 2026 QuickNotes</p></footer>
